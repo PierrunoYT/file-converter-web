@@ -2,6 +2,8 @@
 
 A web-based application that allows users to convert files between different formats. Currently supports image, audio, video, and text file conversions.
 
+Repository: [https://github.com/PierrunoYT/file-converter-web](https://github.com/PierrunoYT/file-converter-web)
+
 ## Features
 
 ### Image Conversion
@@ -107,3 +109,10 @@ The project structure is organized as follows:
 │   ├── video-converter.js
 │   └── text-converter.js
 └── README.md
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Copyright (c) 2024 PierrunoYT
