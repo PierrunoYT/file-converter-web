@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        .converter-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--card-background);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
         .preview-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -49,16 +58,17 @@
         .upload-area {
             border: 2px dashed var(--primary-color);
             border-radius: 1rem;
-            padding: 2rem;
+            padding: 3rem 2rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: var(--card-background);
+            background: var(--background-color);
+            margin-bottom: 2rem;
         }
 
         .upload-area:hover {
             border-color: var(--secondary-color);
-            background: var(--background-color);
+            background: rgba(99, 102, 241, 0.05);
         }
 
         .upload-area i {
@@ -67,15 +77,49 @@
             margin-bottom: 1rem;
         }
 
+        .conversion-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
         .format-select {
-            margin: 1.5rem 0;
             padding: 0.8rem;
+            border: 1px solid var(--primary-color);
             border-radius: 0.5rem;
-            border: 1px solid var(--text-secondary);
             background: var(--card-background);
             color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
             width: 100%;
-            max-width: 300px;
+        }
+
+        .format-select:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .convert-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .convert-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .convert-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
         }
 
         .back-btn {
@@ -137,38 +181,45 @@
         </button>
         
         <header>
-            <h1>Image Converter</h1>
+            <h1><i class="fas fa-images"></i> Image Converter</h1>
             <p>Convert your images to any format</p>
         </header>
 
-        <div class="upload-area" id="uploadArea">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <h2>Drop your images here</h2>
-            <p>or click to select files</p>
-            <input type="file" id="fileInput" multiple accept="image/*,.heic,.HEIC" style="display: none">
+        <div class="converter-section">
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h2>Drop your images here</h2>
+                <p>or click to select files</p>
+                <input type="file" id="fileInput" multiple accept="image/*,.heic,.HEIC" style="display: none">
+            </div>
+
+            <div class="conversion-options">
+                <div class="format-selection">
+                    <label for="formatSelect">Convert to:</label>
+                    <select class="format-select" id="formatSelect">
+                        <option value="">Select output format</option>
+                        <option value="png">PNG</option>
+                        <option value="jpg">JPG</option>
+                        <option value="webp">WEBP</option>
+                        <option value="gif">GIF</option>
+                        <option value="heic">HEIC</option>
+                        <option value="avif">AVIF</option>
+                        <option value="tiff">TIFF</option>
+                        <option value="bmp">BMP</option>
+                    </select>
+                </div>
+
+                <button class="convert-btn" id="convertBtn" disabled>
+                    <i class="fas fa-cog"></i> Convert Images
+                </button>
+            </div>
+
+            <div class="progress-bar" id="progressBar">
+                <div class="progress" id="progress"></div>
+            </div>
+
+            <div class="preview-grid" id="previewGrid"></div>
         </div>
-
-        <select class="format-select" id="formatSelect">
-            <option value="">Select output format</option>
-            <option value="png">PNG</option>
-            <option value="jpg">JPG</option>
-            <option value="webp">WEBP</option>
-            <option value="gif">GIF</option>
-            <option value="heic">HEIC</option>
-            <option value="avif">AVIF</option>
-            <option value="tiff">TIFF</option>
-            <option value="bmp">BMP</option>
-        </select>
-
-        <button class="convert-btn" id="convertBtn" disabled>
-            Convert Images
-        </button>
-
-        <div class="progress-bar" id="progressBar">
-            <div class="progress" id="progress"></div>
-        </div>
-
-        <div class="preview-grid" id="previewGrid"></div>
     </div>
 
     <script src="/script.js"></script>
