@@ -6,6 +6,8 @@ from flask_cors import CORS
 import pillow_heif
 import pillow_avif  # Import to register AVIF plugin
 from pydub import AudioSegment
+from moviepy.editor import VideoFileClip
+import tempfile
 
 # Register HEIF opener with Pillow
 pillow_heif.register_heif_opener()
@@ -38,6 +40,66 @@ def text_converter():
 @app.route('/<path:path>')
 def serve_static(path):
     return app.send_static_file(path)
+
+@app.route('/convert-video', methods=['POST'])
+def convert_video():
+    try:
+        # Get the video file and target format from the request
+        video_file = request.files.get('file')
+        target_format = request.form.get('targetFormat')
+        quality = request.form.get('quality', 'high')  # high, medium, low
+
+        if not video_file or not target_format:
+            return 'Missing video file or format', 400
+
+        # Create a temporary file to save the uploaded video
+        temp_input = tempfile.NamedTemporaryFile(delete=False, suffix=f'.{video_file.filename.split(".")[-1]}')
+        video_file.save(temp_input.name)
+
+        # Create a temporary file for the output
+        temp_output = tempfile.NamedTemporaryFile(delete=False, suffix=f'.{target_format}')
+
+        try:
+            # Load the video file
+            video = VideoFileClip(temp_input.name)
+
+            # Set bitrate based on quality
+            bitrate = {
+                'high': '8000k',
+                'medium': '4000k',
+                'low': '2000k'
+            }.get(quality, '4000k')
+
+            # Write the converted video
+            video.write_videofile(
+                temp_output.name,
+                codec='libx264' if target_format == 'mp4' else None,
+                bitrate=bitrate,
+                audio_codec='aac' if target_format in ['mp4', 'mov'] else 'libvorbis',
+                preset='medium',
+                threads=4
+            )
+
+            # Close the video to free up resources
+            video.close()
+
+            # Send the converted video file
+            return send_file(
+                temp_output.name,
+                mimetype=f'video/{target_format}',
+                as_attachment=True,
+                download_name=f'converted_video.{target_format}'
+            )
+
+        finally:
+            # Clean up temporary files
+            os.unlink(temp_input.name)
+            if os.path.exists(temp_output.name):
+                os.unlink(temp_output.name)
+
+    except Exception as e:
+        print(f"Error converting video: {str(e)}")
+        return str(e), 500
 
 @app.route('/convert-audio', methods=['POST'])
 def convert_audio():
