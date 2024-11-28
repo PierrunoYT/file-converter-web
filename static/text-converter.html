@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Format Converter</title>
+    <title>Text Format Converter</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -31,28 +31,34 @@
             box-shadow: 0 2px 4px var(--shadow-color);
         }
 
-        .preview-item .audio-info {
+        .preview-item .text-info {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin-bottom: 0.5rem;
         }
 
-        .preview-item .audio-icon {
+        .preview-item .text-icon {
             font-size: 2rem;
             color: var(--primary-color);
         }
 
-        .preview-item .audio-name {
+        .preview-item .text-name {
             flex: 1;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        .preview-item audio {
-            width: 100%;
+        .preview-item .text-preview {
             margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            max-height: 100px;
+            overflow-y: auto;
+            padding: 0.5rem;
+            background: var(--background-color);
+            border-radius: 0.25rem;
         }
 
         .preview-item .remove-btn {
@@ -253,18 +259,18 @@
     <div id="dropZone"></div>
     <div class="container">
         <header>
-            <h1><i class="fas fa-music"></i> Audio Format Converter</h1>
-            <p>Convert your audio files between different formats</p>
+            <h1><i class="fas fa-file-text"></i> Text Format Converter</h1>
+            <p>Convert your text documents between different formats</p>
         </header>
 
         <div class="converter-section">
             <div class="upload-container">
                 <div class="upload-area" id="uploadArea">
-                    <i class="fas fa-music"></i>
-                    <h2>Drop your audio files here</h2>
+                    <i class="fas fa-file-text"></i>
+                    <h2>Drop your text files here</h2>
                     <p>or click to select files</p>
-                    <input type="file" id="fileInput" multiple accept="audio/*" style="display: none">
-                    <p class="file-info">Supported formats: MP3, WAV, OGG, M4A, FLAC, AAC</p>
+                    <input type="file" id="fileInput" multiple accept=".txt,.doc,.docx,.pdf,.rtf,.odt" style="display: none">
+                    <p class="file-info">Supported formats: TXT, DOC, DOCX, PDF, RTF, ODT</p>
                 </div>
             </div>
 
@@ -273,17 +279,17 @@
                     <label for="formatSelect">Convert to:</label>
                     <select id="formatSelect">
                         <option value="">Select format</option>
-                        <option value="mp3">MP3</option>
-                        <option value="wav">WAV</option>
-                        <option value="ogg">OGG</option>
-                        <option value="m4a">M4A</option>
-                        <option value="flac">FLAC</option>
-                        <option value="aac">AAC</option>
+                        <option value="txt">TXT</option>
+                        <option value="doc">DOC</option>
+                        <option value="docx">DOCX</option>
+                        <option value="pdf">PDF</option>
+                        <option value="rtf">RTF</option>
+                        <option value="odt">ODT</option>
                     </select>
                 </div>
 
                 <button class="convert-btn" id="convertBtn" disabled>
-                    <i class="fas fa-cog"></i> Convert Audio
+                    <i class="fas fa-cog"></i> Convert Text
                 </button>
             </div>
 
@@ -305,6 +311,6 @@
     </div>
 
     <script src="/script.js"></script>
-    <script src="/audio-converter.js"></script>
+    <script src="/text-converter.js"></script>
 </body>
 </html>

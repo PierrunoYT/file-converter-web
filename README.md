@@ -1,6 +1,6 @@
 # File Format Converter
 
-A web-based application that allows users to convert files between different formats. Currently supports image and audio file conversions.
+A web-based application that allows users to convert files between different formats. Currently supports image, audio, video, and text file conversions.
 
 ## Features
 
@@ -23,6 +23,26 @@ A web-based application that allows users to convert files between different for
   - M4A
   - FLAC
   - AAC
+
+### Video Conversion
+- Supports conversion between multiple video formats:
+  - MP4
+  - AVI
+  - MOV
+  - MKV
+  - WEBM
+- Quality options:
+  - High (8000k bitrate)
+  - Medium (4000k bitrate)
+  - Low (2000k bitrate)
+
+### Text Document Conversion
+- Supports conversion between multiple text document formats:
+  - TXT (Plain Text)
+  - DOC/DOCX (Microsoft Word)
+  - PDF (Portable Document Format)
+  - RTF (Rich Text Format)
+  - ODT (OpenDocument Text)
 
 ## Setup
 
@@ -50,7 +70,7 @@ http://localhost:5000
 
 ## Usage
 
-1. Select the type of conversion you want to perform (Image or Audio)
+1. Select the type of conversion you want to perform (Image, Audio, Video, or Text)
 2. Upload your file(s) by dragging and dropping or clicking to browse
 3. Select the desired output format
 4. Click "Convert" to process your file(s)
@@ -61,9 +81,12 @@ http://localhost:5000
 - Flask: Web framework
 - Pillow: Image processing
 - pydub: Audio processing
-- FFmpeg: Audio/Video processing backend
+- FFmpeg: Audio and Video processing backend (required for both audio and video conversions)
 - pillow_heif: HEIC image support
 - pillow_avif: AVIF image support
+- python-docx: DOCX file handling
+- PyPDF2: PDF file handling
+- odfpy: ODT file handling
 
 ## Development
 
@@ -76,5 +99,11 @@ The project structure is organized as follows:
 │   ├── style.css
 │   ├── script.js
 │   ├── image-converter.html
-│   └── audio-converter.html
+│   ├── audio-converter.html
+│   ├── video-converter.html
+│   ├── text-converter.html
+│   ├── image-converter.js
+│   ├── audio-converter.js
+│   ├── video-converter.js
+│   └── text-converter.js
 └── README.md

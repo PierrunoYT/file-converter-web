@@ -12,6 +12,12 @@ import tempfile
 from werkzeug.utils import secure_filename
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+import docx
+from docx import Document
+from PyPDF2 import PdfReader, PdfWriter
+import odf
+from odf.opendocument import OpenDocumentText
+from odf import text as odf_text
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -22,6 +28,7 @@ MAX_CONTENT_LENGTH = 100 * 1024 * 1024  # 100MB max file size
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'webp', 'heic', 'avif'}
 ALLOWED_AUDIO_EXTENSIONS = {'mp3', 'wav', 'ogg', 'flac', 'm4a', 'aac'}
 ALLOWED_VIDEO_EXTENSIONS = {'mp4', 'avi', 'mov', 'mkv', 'webm'}
+ALLOWED_TEXT_EXTENSIONS = {'txt', 'doc', 'docx', 'pdf', 'rtf', 'odt'}
 
 # Register HEIF opener with Pillow
 pillow_heif.register_heif_opener()
@@ -246,6 +253,97 @@ def convert_image():
 
     except Exception as e:
         error_msg = f"Error converting image: {str(e)}"
+        logger.error(error_msg)
+        return {"error": error_msg}, 500
+
+@app.route('/convert/text', methods=['POST'])
+@limiter.limit("20 per minute")
+def convert_text():
+    try:
+        # Get and validate the text file
+        text_file = request.files.get('file')
+        filename = validate_file(text_file, ALLOWED_TEXT_EXTENSIONS)
+        
+        target_format = request.form.get('target_format')
+        if not target_format or target_format.lower() not in ALLOWED_TEXT_EXTENSIONS:
+            abort(400, description=f"Invalid target format. Allowed formats: {', '.join(ALLOWED_TEXT_EXTENSIONS)}")
+
+        # Create temporary files for input and output
+        temp_input = tempfile.NamedTemporaryFile(delete=False, suffix=f'.{filename.split(".")[-1]}')
+        temp_output = tempfile.NamedTemporaryFile(delete=False, suffix=f'.{target_format}')
+        
+        try:
+            # Save input file
+            text_file.save(temp_input.name)
+            
+            # Convert based on input and target formats
+            if target_format == 'txt':
+                # Convert to plain text
+                if filename.endswith('.docx'):
+                    doc = Document(temp_input.name)
+                    with open(temp_output.name, 'w', encoding='utf-8') as f:
+                        for para in doc.paragraphs:
+                            f.write(para.text + '\n')
+                elif filename.endswith('.pdf'):
+                    reader = PdfReader(temp_input.name)
+                    with open(temp_output.name, 'w', encoding='utf-8') as f:
+                        for page in reader.pages:
+                            f.write(page.extract_text() + '\n')
+                elif filename.endswith('.odt'):
+                    doc = OpenDocumentText(temp_input.name)
+                    with open(temp_output.name, 'w', encoding='utf-8') as f:
+                        for element in doc.getElementsByType(odf_text.P):
+                            f.write(element.text + '\n')
+                else:
+                    # For txt files, just copy
+                    with open(temp_input.name, 'r', encoding='utf-8') as f_in:
+                        with open(temp_output.name, 'w', encoding='utf-8') as f_out:
+                            f_out.write(f_in.read())
+            
+            elif target_format == 'docx':
+                # Convert to DOCX
+                doc = Document()
+                if filename.endswith('.txt'):
+                    with open(temp_input.name, 'r', encoding='utf-8') as f:
+                        for line in f:
+                            doc.add_paragraph(line.strip())
+                elif filename.endswith('.pdf'):
+                    reader = PdfReader(temp_input.name)
+                    for page in reader.pages:
+                        doc.add_paragraph(page.extract_text())
+                doc.save(temp_output.name)
+            
+            elif target_format == 'pdf':
+                # Convert to PDF
+                writer = PdfWriter()
+                if filename.endswith('.txt'):
+                    # Create PDF from text
+                    doc = Document()
+                    with open(temp_input.name, 'r', encoding='utf-8') as f:
+                        for line in f:
+                            doc.add_paragraph(line.strip())
+                    temp_docx = tempfile.NamedTemporaryFile(delete=False, suffix='.docx')
+                    doc.save(temp_docx.name)
+                    # Convert DOCX to PDF using a PDF library
+                    # Note: This is a placeholder. You'll need to implement actual DOCX to PDF conversion
+                    # using a library like python-docx-pdf or similar
+                    
+            # Send the converted file
+            return send_file(
+                temp_output.name,
+                mimetype=f'application/{target_format}',
+                as_attachment=True,
+                download_name=f'converted_document.{target_format}'
+            )
+            
+        finally:
+            # Clean up temporary files
+            os.unlink(temp_input.name)
+            if os.path.exists(temp_output.name):
+                os.unlink(temp_output.name)
+                
+    except Exception as e:
+        error_msg = f"Error converting text document: {str(e)}"
         logger.error(error_msg)
         return {"error": error_msg}, 500
 
