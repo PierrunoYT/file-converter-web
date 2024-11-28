@@ -2,3 +2,7 @@ Flask==3.0.0
 Pillow==10.1.0
 flask-cors==4.0.0
 pillow-heif==0.15.0
+pillow-avif==1.3.1
+pydub==0.25.1
+moviepy==1.0.3
+flask-limiter==3.3.1

@@ -1,19 +1,52 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, abort
 from PIL import Image
 import io
 import os
+import logging
 from flask_cors import CORS
 import pillow_heif
 import pillow_avif  # Import to register AVIF plugin
 from pydub import AudioSegment
 from moviepy.editor import VideoFileClip
 import tempfile
+from werkzeug.utils import secure_filename
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Constants
+MAX_CONTENT_LENGTH = 100 * 1024 * 1024  # 100MB max file size
+ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'webp', 'heic', 'avif'}
+ALLOWED_AUDIO_EXTENSIONS = {'mp3', 'wav', 'ogg', 'flac', 'm4a', 'aac'}
+ALLOWED_VIDEO_EXTENSIONS = {'mp4', 'avi', 'mov', 'mkv', 'webm'}
 
 # Register HEIF opener with Pillow
 pillow_heif.register_heif_opener()
 
 app = Flask(__name__, static_url_path='', static_folder='static')
+app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
 CORS(app)  # Enable CORS for all routes
+
+# Initialize rate limiter
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"]
+)
+
+def allowed_file(filename, allowed_extensions):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
+def validate_file(file, allowed_extensions):
+    if not file:
+        abort(400, description="No file provided")
+    filename = secure_filename(file.filename)
+    if not allowed_file(filename, allowed_extensions):
+        abort(400, description=f"File type not allowed. Allowed types: {', '.join(allowed_extensions)}")
+    return filename
 
 # Serve static files
 @app.route('/')
@@ -42,15 +75,20 @@ def serve_static(path):
     return app.send_static_file(path)
 
 @app.route('/convert-video', methods=['POST'])
+@limiter.limit("10 per minute")
 def convert_video():
     try:
-        # Get the video file and target format from the request
+        # Get and validate the video file
         video_file = request.files.get('file')
+        filename = validate_file(video_file, ALLOWED_VIDEO_EXTENSIONS)
+        
         target_format = request.form.get('targetFormat')
+        if not target_format or target_format not in ALLOWED_VIDEO_EXTENSIONS:
+            abort(400, description=f"Invalid target format. Allowed formats: {', '.join(ALLOWED_VIDEO_EXTENSIONS)}")
+            
         quality = request.form.get('quality', 'high')  # high, medium, low
-
-        if not video_file or not target_format:
-            return 'Missing video file or format', 400
+        
+        logger.info(f"Starting video conversion: {filename} to {target_format}")
 
         # Create a temporary file to save the uploaded video
         temp_input = tempfile.NamedTemporaryFile(delete=False, suffix=f'.{video_file.filename.split(".")[-1]}')
@@ -102,15 +140,20 @@ def convert_video():
         return str(e), 500
 
 @app.route('/convert-audio', methods=['POST'])
+@limiter.limit("20 per minute")
 def convert_audio():
     try:
-        # Get the audio file, target format and original filename from the request
+        # Get and validate the audio file
         audio_file = request.files.get('audio')
+        filename = validate_file(audio_file, ALLOWED_AUDIO_EXTENSIONS)
+        
         target_format = request.form.get('format')
-        original_filename = request.form.get('filename', 'converted_audio')
-
-        if not audio_file or not target_format:
-            return 'Missing audio file or format', 400
+        if not target_format or target_format.lower() not in ALLOWED_AUDIO_EXTENSIONS:
+            abort(400, description=f"Invalid target format. Allowed formats: {', '.join(ALLOWED_AUDIO_EXTENSIONS)}")
+            
+        original_filename = secure_filename(request.form.get('filename', 'converted_audio'))
+        
+        logger.info(f"Starting audio conversion: {filename} to {target_format}")
 
         # Read the audio file using pydub
         audio = AudioSegment.from_file(audio_file)
@@ -135,15 +178,28 @@ def convert_audio():
         return str(e), 500
 
 @app.route('/convert', methods=['POST'])
+@limiter.limit("30 per minute")
 def convert_image():
     try:
-        # Get the image, target format and original filename from the request
+        # Get and validate the image file
         image_file = request.files.get('image')
+        filename = validate_file(image_file, ALLOWED_IMAGE_EXTENSIONS)
+        
         target_format = request.form.get('format')
-        original_filename = request.form.get('filename', 'converted_image')
-
-        if not image_file or not target_format:
-            return 'Missing image or format', 400
+        if not target_format or target_format.lower() not in ALLOWED_IMAGE_EXTENSIONS:
+            abort(400, description=f"Invalid target format. Allowed formats: {', '.join(ALLOWED_IMAGE_EXTENSIONS)}")
+            
+        compression = request.form.get('compression', '95')  # New compression parameter
+        try:
+            compression = int(compression)
+            if not (0 <= compression <= 100):
+                raise ValueError
+        except ValueError:
+            compression = 95
+            
+        original_filename = secure_filename(request.form.get('filename', 'converted_image'))
+        
+        logger.info(f"Starting image conversion: {filename} to {target_format}")
 
         # Read the image using PIL
         image = Image.open(image_file)
@@ -189,8 +245,9 @@ def convert_image():
         )
 
     except Exception as e:
-        print(f"Error converting image: {str(e)}")
-        return str(e), 500
+        error_msg = f"Error converting image: {str(e)}"
+        logger.error(error_msg)
+        return {"error": error_msg}, 500
 
 if __name__ == '__main__':
     # Ensure the static folder exists
