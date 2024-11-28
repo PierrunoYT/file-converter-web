@@ -96,10 +96,13 @@ The project structure is organized as follows:
 ```
 .
 ├── app.py              # Flask application
+├── index.html         # Main entry point
 ├── requirements.txt    # Python dependencies
+├── LICENSE            # MIT License file
 ├── static/            # Static files
-│   ├── style.css
-│   ├── script.js
+│   ├── index.html     # Static index page
+│   ├── style.css      # Global styles
+│   ├── script.js      # Global scripts
 │   ├── image-converter.html
 │   ├── audio-converter.html
 │   ├── video-converter.html
