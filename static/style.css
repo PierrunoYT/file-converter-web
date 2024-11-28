@@ -22,9 +22,9 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 header {
@@ -48,22 +48,22 @@ header p {
 
 .converter-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    padding: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    padding: 0.5rem;
 }
 
 .converter-card {
     background: var(--card-background);
     border-radius: 1rem;
-    padding: 2rem;
+    padding: 1.5rem;
     text-align: center;
     position: relative;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 6px var(--shadow-color);
     cursor: pointer;
-    min-height: 280px;
+    min-height: 250px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -128,9 +128,10 @@ header p {
     transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .container {
-        padding: 1rem;
+        padding: 0.5rem;
+        max-width: 100%;
     }
 
     header h1 {
@@ -138,11 +139,12 @@ header p {
     }
 
     .converter-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.75rem;
     }
 
     .converter-card {
-        padding: 1.5rem;
+        padding: 1.25rem;
+        min-height: 230px;
     }
 }
