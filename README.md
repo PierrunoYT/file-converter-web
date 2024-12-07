@@ -48,12 +48,23 @@ Repository: [https://github.com/PierrunoYT/file-converter-web](https://github.co
 
 ## Setup
 
-1. Install Python dependencies:
+1. Create and activate a Python virtual environment:
+```bash
+# Windows
+python -m venv venv
+.\venv\Scripts\activate
+
+# macOS/Linux
+python3 -m venv venv
+source venv/bin/activate
+```
+
+2. Install Python dependencies (after activating venv):
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Install FFmpeg (required for audio conversion):
+3. Install FFmpeg (required for audio conversion):
    - Windows: Install using chocolatey `choco install ffmpeg` or download from [FFmpeg official website](https://ffmpeg.org/download.html)
    - Mac: `brew install ffmpeg`
    - Linux: `sudo apt-get install ffmpeg`
