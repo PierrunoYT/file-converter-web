@@ -51,12 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleFiles(newFiles) {
         const validFiles = newFiles.filter(file => {
-            const validExtensions = ['.txt', '.doc', '.docx', '.pdf', '.rtf', '.odt'];
+            const validExtensions = ['.txt', '.doc', '.docx', '.pdf', '.rtf', '.odt', '.md'];
             return validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
         });
 
         if (validFiles.length === 0) {
-            alert('Please upload valid text documents (TXT, DOC, DOCX, PDF, RTF, ODT)');
+            alert('Please upload valid text documents (TXT, DOC, DOCX, PDF, RTF, ODT, MD)');
             return;
         }
 
@@ -95,15 +95,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const preview = document.createElement('div');
         preview.className = 'text-preview';
         
-        // Read and display preview for text files
-        if (file.type === 'text/plain') {
+        // Read and display preview for text files and markdown
+        if (file.type === 'text/plain' || file.name.toLowerCase().endsWith('.md')) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 preview.textContent = e.target.result.slice(0, 200) + '...';
             };
             reader.readAsText(file);
         } else {
-            preview.textContent = `${file.type} document - Preview not available`;
+            preview.textContent = `${file.type || file.name.split('.').pop().toUpperCase()} document - Preview not available`;
         }
 
         textInfo.appendChild(icon);

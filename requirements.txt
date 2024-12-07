@@ -9,3 +9,5 @@ flask-limiter
 python-docx
 PyPDF2
 odfpy
+markdown
+docx2pdf

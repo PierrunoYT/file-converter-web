@@ -18,6 +18,8 @@ from PyPDF2 import PdfReader, PdfWriter
 import odf
 from odf.opendocument import OpenDocumentText
 from odf import text as odf_text
+import markdown
+from docx2pdf import convert
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -28,7 +30,7 @@ MAX_CONTENT_LENGTH = 100 * 1024 * 1024  # 100MB max file size
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'webp', 'heic', 'avif'}
 ALLOWED_AUDIO_EXTENSIONS = {'mp3', 'wav', 'ogg', 'flac', 'm4a', 'aac'}
 ALLOWED_VIDEO_EXTENSIONS = {'mp4', 'avi', 'mov', 'mkv', 'webm'}
-ALLOWED_TEXT_EXTENSIONS = {'txt', 'doc', 'docx', 'pdf', 'rtf', 'odt'}
+ALLOWED_TEXT_EXTENSIONS = {'txt', 'doc', 'docx', 'pdf', 'rtf', 'odt', 'md'}
 
 # Register HEIF opener with Pillow
 pillow_heif.register_heif_opener()
@@ -279,7 +281,21 @@ def convert_text():
             # Convert based on input and target formats
             if target_format == 'txt':
                 # Convert to plain text
-                if filename.endswith('.docx'):
+                if filename.endswith('.md'):
+                    with open(temp_input.name, 'r', encoding='utf-8') as f:
+                        md_content = f.read()
+                    # Convert markdown to plain text (strips all markdown formatting)
+                    html_content = markdown.markdown(md_content)
+                    # Simple HTML to text conversion (strips HTML tags)
+                    text_content = html_content.replace('<p>', '').replace('</p>', '\n\n')
+                    text_content = text_content.replace('<h1>', '').replace('</h1>', '\n\n')
+                    text_content = text_content.replace('<h2>', '').replace('</h2>', '\n\n')
+                    text_content = text_content.replace('<h3>', '').replace('</h3>', '\n\n')
+                    text_content = text_content.replace('<ul>', '\n').replace('</ul>', '\n')
+                    text_content = text_content.replace('<li>', '* ').replace('</li>', '\n')
+                    with open(temp_output.name, 'w', encoding='utf-8') as f:
+                        f.write(text_content)
+                elif filename.endswith('.docx'):
                     doc = Document(temp_input.name)
                     with open(temp_output.name, 'w', encoding='utf-8') as f:
                         for para in doc.paragraphs:
@@ -303,7 +319,25 @@ def convert_text():
             elif target_format == 'docx':
                 # Convert to DOCX
                 doc = Document()
-                if filename.endswith('.txt'):
+                if filename.endswith('.md'):
+                    with open(temp_input.name, 'r', encoding='utf-8') as f:
+                        md_content = f.read()
+                    # Convert markdown to HTML
+                    html_content = markdown.markdown(md_content)
+                    # Parse the HTML content and add to document with formatting
+                    # This is a simple conversion that maintains basic formatting
+                    for line in html_content.split('\n'):
+                        if line.startswith('<h1>'):
+                            doc.add_heading(line[4:-5], level=1)
+                        elif line.startswith('<h2>'):
+                            doc.add_heading(line[4:-5], level=2)
+                        elif line.startswith('<h3>'):
+                            doc.add_heading(line[4:-5], level=3)
+                        elif line.startswith('<p>'):
+                            doc.add_paragraph(line[3:-4])
+                        elif line.startswith('<li>'):
+                            doc.add_paragraph(line[4:-5], style='List Bullet')
+                elif filename.endswith('.txt'):
                     with open(temp_input.name, 'r', encoding='utf-8') as f:
                         for line in f:
                             doc.add_paragraph(line.strip())
@@ -316,7 +350,32 @@ def convert_text():
             elif target_format == 'pdf':
                 # Convert to PDF
                 writer = PdfWriter()
-                if filename.endswith('.txt'):
+                if filename.endswith('.md'):
+                    # Convert markdown to docx first
+                    doc = Document()
+                    with open(temp_input.name, 'r', encoding='utf-8') as f:
+                        md_content = f.read()
+                    # Convert markdown to HTML
+                    html_content = markdown.markdown(md_content)
+                    # Parse the HTML content and add to document with formatting
+                    for line in html_content.split('\n'):
+                        if line.startswith('<h1>'):
+                            doc.add_heading(line[4:-5], level=1)
+                        elif line.startswith('<h2>'):
+                            doc.add_heading(line[4:-5], level=2)
+                        elif line.startswith('<h3>'):
+                            doc.add_heading(line[4:-5], level=3)
+                        elif line.startswith('<p>'):
+                            doc.add_paragraph(line[3:-4])
+                        elif line.startswith('<li>'):
+                            doc.add_paragraph(line[4:-5], style='List Bullet')
+                    temp_docx = tempfile.NamedTemporaryFile(delete=False, suffix='.docx')
+                    doc.save(temp_docx.name)
+                    # Convert DOCX to PDF
+                    convert(temp_docx.name, temp_output.name)
+                    # Clean up temporary DOCX file
+                    os.unlink(temp_docx.name)
+                elif filename.endswith('.txt'):
                     # Create PDF from text
                     doc = Document()
                     with open(temp_input.name, 'r', encoding='utf-8') as f:
@@ -324,10 +383,45 @@ def convert_text():
                             doc.add_paragraph(line.strip())
                     temp_docx = tempfile.NamedTemporaryFile(delete=False, suffix='.docx')
                     doc.save(temp_docx.name)
-                    # Convert DOCX to PDF using a PDF library
-                    # Note: This is a placeholder. You'll need to implement actual DOCX to PDF conversion
-                    # using a library like python-docx-pdf or similar
-                    
+                    # Convert DOCX to PDF
+                    convert(temp_docx.name, temp_output.name)
+                    # Clean up temporary DOCX file
+                    os.unlink(temp_docx.name)
+
+            elif target_format == 'md':
+                # Convert to Markdown
+                if filename.endswith('.txt'):
+                    # Simple conversion: each line becomes a paragraph
+                    with open(temp_input.name, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    # Convert plain text to markdown (each paragraph gets wrapped in markdown)
+                    md_content = '\n\n'.join(f'{para}' for para in content.split('\n\n'))
+                    with open(temp_output.name, 'w', encoding='utf-8') as f:
+                        f.write(md_content)
+                elif filename.endswith('.docx'):
+                    doc = Document(temp_input.name)
+                    with open(temp_output.name, 'w', encoding='utf-8') as f:
+                        for para in doc.paragraphs:
+                            # Convert heading styles to markdown
+                            if para.style.name.startswith('Heading'):
+                                level = int(para.style.name[-1])
+                                f.write('#' * level + ' ' + para.text + '\n\n')
+                            # Convert list items
+                            elif para.style.name == 'List Bullet':
+                                f.write('* ' + para.text + '\n')
+                            # Regular paragraphs
+                            else:
+                                f.write(para.text + '\n\n')
+                elif filename.endswith('.pdf'):
+                    reader = PdfReader(temp_input.name)
+                    with open(temp_output.name, 'w', encoding='utf-8') as f:
+                        for page in reader.pages:
+                            # Convert PDF text to markdown paragraphs
+                            text = page.extract_text()
+                            paragraphs = text.split('\n\n')
+                            for para in paragraphs:
+                                f.write(para.strip() + '\n\n')
+
             # Send the converted file
             return send_file(
                 temp_output.name,
