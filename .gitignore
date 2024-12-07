@@ -1,1 +1,60 @@
-__pycache__/\n*.pyc\n*.pyo\n*.pyd\n.Python\nenv/\nvenv/\n.env\n.venv\n*.log
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+env/
+venv/
+.env
+.venv
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.project
+.pydevproject
+.settings/
+
+# Operating System
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+
+# Application Specific
+temp/
+uploads/
+converted_files/
+test_moviepy.py
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+*.mp3
+*.wav
+*.ogg
+*.flac
+*.m4a
+*.aac

@@ -7,7 +7,7 @@ from flask_cors import CORS
 import pillow_heif
 import pillow_avif  # Import to register AVIF plugin
 from pydub import AudioSegment
-from moviepy.editor import VideoFileClip
+from moviepy.video.io.VideoFileClip import VideoFileClip
 import tempfile
 from werkzeug.utils import secure_filename
 from flask_limiter import Limiter
