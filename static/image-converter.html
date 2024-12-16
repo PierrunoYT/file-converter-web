@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Format Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/image-converter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div id="dropZone"></div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-image"></i> Image Format Converter</h1>
+            <p class="subtitle">Convert your images between different formats</p>
+        </header>
+
+        <div class="converter-section">
+            <div class="upload-container">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Drop your image files here</h3>
+                    <p>or click to select files</p>
+                    <input type="file" id="fileInput" multiple accept="image/*" style="display: none">
+                    <p class="supported-formats">Supported formats: JPG, PNG, WEBP, GIF, BMP, TIFF</p>
+                </div>
+            </div>
+
+            <div class="convert-section">
+                <label class="convert-label" for="formatSelect">Convert to:</label>
+                <div class="format-group">
+                    <label class="convert-label" for="formatSelect">Format:</label>
+                    <select id="formatSelect">
+                        <option value="">Select format</option>
+                        <option value="jpg">JPG</option>
+                        <option value="png">PNG</option>
+                        <option value="webp">WEBP</option>
+                        <option value="gif">GIF</option>
+                        <option value="bmp">BMP</option>
+                        <option value="tiff">TIFF</option>
+                    </select>
+                </div>
+                
+                <div class="quality-group">
+                    <label class="convert-label" for="quality">Quality:</label>
+                    <select id="quality">
+                        <option value="100">Maximum (100%)</option>
+                        <option value="80" selected>High (80%)</option>
+                        <option value="60">Medium (60%)</option>
+                        <option value="40">Low (40%)</option>
+                    </select>
+                </div>
+
+                <button class="convert-btn" id="convertBtn" disabled>
+                    <i class="fas fa-sync-alt"></i> Convert Images
+                </button>
+            </div>
+
+            <div id="previewContainer" class="preview-grid"></div>
+
+            <div id="progressContainer" class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar"></div>
+                </div>
+                <p id="progressText">Converting... 0%</p>
+            </div>
+        </div>
+
+        <div class="back-button">
+            <a href="/"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <script src="/static/js/image-converter.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequency Converter - All-In-One Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/frequency-converter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-wave-square"></i> Frequency Converter</h1>
+            <p>Convert between different frequency units</p>
+        </header>
+
+        <div class="converter-container">
+            <div class="form-group">
+                <label for="frequency-value">Value</label>
+                <input type="number" id="frequency-value" class="form-control" placeholder="Enter value" step="any">
+            </div>
+            <div class="form-group">
+                <label for="frequency-from">From</label>
+                <select id="frequency-from" class="form-control">
+                    <option value="hz">Hz</option>
+                    <option value="khz">kHz</option>
+                    <option value="mhz">MHz</option>
+                    <option value="ghz">GHz</option>
+                    <option value="rpm">RPM</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="frequency-to">To</label>
+                <select id="frequency-to" class="form-control">
+                    <option value="hz">Hz</option>
+                    <option value="khz">kHz</option>
+                    <option value="mhz">MHz</option>
+                    <option value="ghz">GHz</option>
+                    <option value="rpm">RPM</option>
+                </select>
+            </div>
+            <button onclick="convertFrequency()" class="convert-btn">
+                <i class="fas fa-exchange-alt"></i>
+                Convert
+            </button>
+            <div class="result-section">
+                <h2>Result</h2>
+                <div id="frequency-result" class="result-value"></div>
+            </div>
+        </div>
+
+        <a href="/" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+    </div>
+    <script src="/static/js/frequency-converter.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Format Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/audio-converter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div id="dropZone"></div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-music"></i> Audio Format Converter</h1>
+            <p class="subtitle">Convert your audio files between different formats</p>
+        </header>
+
+        <div class="converter-section">
+            <div class="upload-container">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-music"></i>
+                    <h3>Drop your audio files here</h3>
+                    <p>or click to select files</p>
+                    <input type="file" id="fileInput" multiple accept="audio/*" style="display: none">
+                    <p class="supported-formats">Supported formats: MP3, WAV, OGG, M4A, FLAC, AAC</p>
+                </div>
+            </div>
+
+            <div class="convert-section">
+                <label class="convert-label" for="formatSelect">Convert to:</label>
+                <select id="formatSelect">
+                    <option value="">Select format</option>
+                    <option value="mp3">MP3</option>
+                    <option value="wav">WAV</option>
+                    <option value="ogg">OGG</option>
+                    <option value="m4a">M4A</option>
+                    <option value="flac">FLAC</option>
+                    <option value="aac">AAC</option>
+                </select>
+
+                <button class="convert-btn" id="convertBtn" disabled>
+                    <i class="fas fa-cog"></i> Convert Audio
+                </button>
+            </div>
+
+            <div id="previewContainer" class="preview-grid"></div>
+            <div id="progressContainer" class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar"></div>
+                </div>
+                <p id="progressText">Converting... 0%</p>
+            </div>
+        </div>
+
+        <div class="back-button">
+            <a href="/"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <script src="/static/js/audio-converter.js"></script>
+</body>
+</html>

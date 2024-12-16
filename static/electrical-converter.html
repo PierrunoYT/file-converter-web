@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Units Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .converter-section {
+            margin-top: 2rem;
+        }
+
+        .electrical-input {
+            margin-bottom: 1.5rem;
+        }
+
+        .electrical-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background: white;
+            margin-bottom: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+        }
+
+        .convert-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgb(139, 92, 246), rgb(249, 115, 22)) !important;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .convert-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Electrical Units Converter</h1>
+            <p>Convert between different electrical units instantly</p>
+        </header>
+
+        <div class="converter-section">
+            <!-- Current (Ampere) Converter -->
+            <div class="electrical-input">
+                <h2>Current Converter</h2>
+                <div class="electrical-grid">
+                    <div>
+                        <label for="currentInput">Enter Value:</label>
+                        <input type="number" id="currentInput" placeholder="Enter value">
+                        <select id="currentFromUnit">
+                            <option value="A">Ampere (A)</option>
+                            <option value="mA">Milliampere (mA)</option>
+                            <option value="µA">Microampere (µA)</option>
+                            <option value="kA">Kiloampere (kA)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Converted Value:</label>
+                        <input type="number" id="currentResult" readonly>
+                        <select id="currentToUnit">
+                            <option value="A">Ampere (A)</option>
+                            <option value="mA">Milliampere (mA)</option>
+                            <option value="µA">Microampere (µA)</option>
+                            <option value="kA">Kiloampere (kA)</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="convert-btn" onclick="convertCurrent()">Convert Current</button>
+            </div>
+
+            <!-- Voltage Converter -->
+            <div class="electrical-input">
+                <h2>Voltage Converter</h2>
+                <div class="electrical-grid">
+                    <div>
+                        <label for="voltageInput">Enter Value:</label>
+                        <input type="number" id="voltageInput" placeholder="Enter value">
+                        <select id="voltageFromUnit">
+                            <option value="V">Volt (V)</option>
+                            <option value="mV">Millivolt (mV)</option>
+                            <option value="µV">Microvolt (µV)</option>
+                            <option value="kV">Kilovolt (kV)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Converted Value:</label>
+                        <input type="number" id="voltageResult" readonly>
+                        <select id="voltageToUnit">
+                            <option value="V">Volt (V)</option>
+                            <option value="mV">Millivolt (mV)</option>
+                            <option value="µV">Microvolt (µV)</option>
+                            <option value="kV">Kilovolt (kV)</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="convert-btn" onclick="convertVoltage()">Convert Voltage</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Current conversion factors (relative to Ampere)
+        const currentFactors = {
+            'A': 1,
+            'mA': 0.001,
+            'µA': 0.000001,
+            'kA': 1000
+        };
+
+        // Voltage conversion factors (relative to Volt)
+        const voltageFactors = {
+            'V': 1,
+            'mV': 0.001,
+            'µV': 0.000001,
+            'kV': 1000
+        };
+
+        function convertCurrent() {
+            const input = document.getElementById('currentInput').value;
+            const fromUnit = document.getElementById('currentFromUnit').value;
+            const toUnit = document.getElementById('currentToUnit').value;
+            
+            // Convert to base unit (Ampere) first
+            const baseValue = input * currentFactors[fromUnit];
+            // Convert from base unit to target unit
+            const result = baseValue / currentFactors[toUnit];
+            
+            document.getElementById('currentResult').value = result.toFixed(6);
+        }
+
+        function convertVoltage() {
+            const input = document.getElementById('voltageInput').value;
+            const fromUnit = document.getElementById('voltageFromUnit').value;
+            const toUnit = document.getElementById('voltageToUnit').value;
+            
+            // Convert to base unit (Volt) first
+            const baseValue = input * voltageFactors[fromUnit];
+            // Convert from base unit to target unit
+            const result = baseValue / voltageFactors[toUnit];
+            
+            document.getElementById('voltageResult').value = result.toFixed(6);
+        }
+
+        // Add event listeners for real-time conversion
+        document.getElementById('currentInput').addEventListener('input', convertCurrent);
+        document.getElementById('currentFromUnit').addEventListener('change', convertCurrent);
+        document.getElementById('currentToUnit').addEventListener('change', convertCurrent);
+        
+        document.getElementById('voltageInput').addEventListener('input', convertVoltage);
+        document.getElementById('voltageFromUnit').addEventListener('change', convertVoltage);
+        document.getElementById('voltageToUnit').addEventListener('change', convertVoltage);
+    </script>
+</body>
+</html>

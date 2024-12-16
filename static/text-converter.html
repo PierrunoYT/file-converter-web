@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Format Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/text-converter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div id="dropZone"></div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-file-text"></i> Text Format Converter</h1>
+            <p>Convert your text documents between different formats</p>
+        </header>
+
+        <div class="converter-section">
+            <div class="upload-container">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-file-text"></i>
+                    <h2>Drop your text files here</h2>
+                    <p>or click to select files</p>
+                    <input type="file" id="fileInput" multiple accept=".txt,.doc,.docx,.pdf,.rtf,.odt,.md" style="display: none">
+                    <p class="file-info">Supported formats: TXT, DOC, DOCX, PDF, RTF, ODT, MD</p>
+                </div>
+            </div>
+
+            <div class="format-selection">
+                <label for="formatSelect">Convert to:</label>
+                <select id="formatSelect">
+                    <option value="">Select format</option>
+                    <option value="txt">TXT</option>
+                    <option value="doc">DOC</option>
+                    <option value="docx">DOCX</option>
+                    <option value="pdf">PDF</option>
+                    <option value="rtf">RTF</option>
+                    <option value="odt">ODT</option>
+                    <option value="md">Markdown (MD)</option>
+                </select>
+            </div>
+            
+            <button class="convert-btn" id="convertBtn" disabled>
+                <i class="fas fa-cog"></i> Convert Text
+            </button>
+
+            <div class="progress-container" style="display: none;">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <p class="progress-text">0%</p>
+            </div>
+
+            <div class="preview-grid" id="previewGrid"></div>
+        </div>
+
+        <div class="back-button">
+            <a href="/" class="btn">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/text-converter.js"></script>
+</body>
+</html>

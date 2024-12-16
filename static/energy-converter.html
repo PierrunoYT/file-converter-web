@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Converter - All-In-One Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/energy-converter.css">
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Energy Converter</h1>
+        <p class="subtitle">Convert between different energy units</p>
+        
+        <div class="converter-container">
+            <div class="input-group">
+                <label>Value</label>
+                <input type="number" id="fromValue" placeholder="Enter value">
+                <select id="fromUnit">
+                    <option value="joules">Joules (J)</option>
+                    <option value="kilojoules">Kilojoules (kJ)</option>
+                    <option value="calories">Calories (cal)</option>
+                    <option value="kilocalories">Kilocalories (kcal)</option>
+                    <option value="watt_hours">Watt-hours (Wh)</option>
+                    <option value="kilowatt_hours">Kilowatt-hours (kWh)</option>
+                    <option value="electron_volts">Electron volts (eV)</option>
+                    <option value="british_thermal_units">British Thermal Units (BTU)</option>
+                    <option value="foot_pounds">Foot-pounds (ft⋅lb)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>To</label>
+                <select id="toUnit">
+                    <option value="joules">Joules (J)</option>
+                    <option value="kilojoules">Kilojoules (kJ)</option>
+                    <option value="calories">Calories (cal)</option>
+                    <option value="kilocalories">Kilocalories (kcal)</option>
+                    <option value="watt_hours">Watt-hours (Wh)</option>
+                    <option value="kilowatt_hours">Kilowatt-hours (kWh)</option>
+                    <option value="electron_volts">Electron volts (eV)</option>
+                    <option value="british_thermal_units">British Thermal Units (BTU)</option>
+                    <option value="foot_pounds">Foot-pounds (ft⋅lb)</option>
+                </select>
+            </div>
+
+            <button id="convertBtn" class="convert-btn">
+                <span>⇌</span> Convert
+            </button>
+
+            <div class="result-section">
+                <h2>Result</h2>
+                <div class="result-value" id="toValue"></div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Common Energy Conversions</h2>
+            <ul>
+                <li>1 kilocalorie = 4184 joules</li>
+                <li>1 kilowatt-hour = 3,600,000 joules</li>
+                <li>1 BTU = 1,055.06 joules</li>
+            </ul>
+        </div>
+        <a href="/" class="back-link">← Back to Home</a>
+    </div>
+    <script src="/static/js/energy-converter.js"></script>
+</body>
+</html>

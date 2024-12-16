@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volume Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+        }
+
+        .convert-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #8b5cf6, #f97316);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        
+        .convert-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .convert-btn:not(:disabled):hover {
+            opacity: 0.95;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .result-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 0.5rem;
+        }
+
+        .result-section h2 {
+            color: #64748b;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #64748b;
+            text-decoration: none;
+            margin-top: 2rem;
+            font-size: 1rem;
+        }
+
+        .back-link:hover {
+            color: #6366f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-flask"></i> Volume Converter</h1>
+            <p>Convert volumes between different units</p>
+        </header>
+        <div class="form-group">
+            <label>Enter Value:</label>
+            <input type="number" id="fromValue" class="form-control" step="any">
+        </div>
+
+        <div class="form-group">
+            <label>From Unit:</label>
+            <select id="fromUnit" class="form-control">
+                <option value="l">Liter (l)</option>
+                <option value="ml">Milliliter (ml)</option>
+                <option value="cl">Centiliter (cl)</option>
+                <option value="dl">Deciliter (dl)</option>
+                <option value="hl">Hectoliter (hl)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Result:</label>
+            <input type="text" id="toValue" class="form-control" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>To Unit:</label>
+            <select id="toUnit" class="form-control">
+                <option value="ml">Milliliter (ml)</option>
+                <option value="l">Liter (l)</option>
+                <option value="cl">Centiliter (cl)</option>
+                <option value="dl">Deciliter (dl)</option>
+                <option value="hl">Hectoliter (hl)</option>
+            </select>
+        </div>
+
+        <button id="convertBtn" class="convert-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
+                <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
+            </svg>
+            Convert Volume
+        </button>
+
+        <div class="result-section">
+            <h2>Converted Volume</h2>
+            <div id="result" class="result-value">Convert volumes between different units</div>
+        </div>
+
+        <a href="/" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            Back to Home
+        </a>
+    </div>
+    <script src="/static/js/volume-converter.js"></script>
+</body>
+</html>

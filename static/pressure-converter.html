@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pressure Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .converter-section {
+            margin-top: 2rem;
+        }
+
+        .pressure-input {
+            margin-bottom: 1.5rem;
+        }
+
+        .pressure-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background: white;
+            margin-bottom: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+        }
+
+        .convert-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgb(139, 92, 246), rgb(249, 115, 22)) !important;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+            opacity: 1 !important;
+            background-clip: initial !important;
+            -webkit-background-clip: initial !important;
+            -webkit-text-fill-color: initial !important;
+        }
+
+        .convert-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .convert-btn:active {
+            transform: translateY(0);
+        }
+
+        .back-button {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .back-button .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: #64748b;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-button .btn:hover {
+            color: #334155;
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #334155;
+        }
+
+        .result.active {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+        }
+
+        .info-text {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #64748b;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pressure Converter</h1>
+            <p>Convert between different pressure units instantly</p>
+        </header>
+
+        <div class="converter-section">
+            <div class="pressure-input">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" step="0.01" value="1">
+            </div>
+
+            <div class="pressure-grid">
+                <div class="pressure-input">
+                    <label for="fromUnit">From Unit:</label>
+                    <select id="fromUnit" class="pressure-select">
+                        <optgroup label="Common Units">
+                            <option value="Pa">Pascal (Pa)</option>
+                            <option value="kPa">Kilopascal (kPa)</option>
+                            <option value="MPa">Megapascal (MPa)</option>
+                            <option value="bar">Bar</option>
+                            <option value="psi">PSI</option>
+                            <option value="atm">Atmosphere (atm)</option>
+                        </optgroup>
+                        <optgroup label="Other Units">
+                            <option value="torr">Torr</option>
+                            <option value="mmHg">Millimeters of Mercury (mmHg)</option>
+                            <option value="inHg">Inches of Mercury (inHg)</option>
+                            <option value="mbar">Millibar (mbar)</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="pressure-input">
+                    <label for="toUnit">To Unit:</label>
+                    <select id="toUnit" class="pressure-select">
+                        <optgroup label="Common Units">
+                            <option value="Pa">Pascal (Pa)</option>
+                            <option value="kPa">Kilopascal (kPa)</option>
+                            <option value="MPa">Megapascal (MPa)</option>
+                            <option value="bar">Bar</option>
+                            <option value="psi">PSI</option>
+                            <option value="atm">Atmosphere (atm)</option>
+                        </optgroup>
+                        <optgroup label="Other Units">
+                            <option value="torr">Torr</option>
+                            <option value="mmHg">Millimeters of Mercury (mmHg)</option>
+                            <option value="inHg">Inches of Mercury (inHg)</option>
+                            <option value="mbar">Millibar (mbar)</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+
+            <button class="convert-btn" id="convert-button">
+                Convert
+            </button>
+
+            <div class="result" id="result">
+                Enter a value and select units to convert
+            </div>
+
+            <p class="info-text">
+                Note: 1 atm = 101,325 Pa = 14.696 psi = 1.013 bar
+            </p>
+        </div>
+
+        <div class="back-button">
+            <a href="/" class="btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Converters
+            </a>
+        </div>
+    </div>
+    <script src="/static/js/pressure-converter.js"></script>
+</body>
+</html>

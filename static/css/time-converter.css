@@ -1,0 +1,208 @@
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #8b5cf6, #db2777, #f97316);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+h1 i {
+    font-size: 2.5rem;
+}
+
+.subtitle {
+    text-align: center;
+    color: #6b7280;
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+}
+
+.converter-section {
+    margin-top: 2rem;
+    display: grid;
+    gap: 2rem;
+}
+
+.input-section, .output-section {
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--shadow-color);
+}
+
+.section-title {
+    font-size: 1.2rem;
+    color: #374151;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    background: white;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+}
+
+.timezone-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .timezone-group {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.convert-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgb(139, 92, 246), rgb(249, 115, 22)) !important;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+    opacity: 1 !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    margin-top: 1.5rem;
+}
+
+.convert-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.convert-btn:not(:disabled):hover {
+    opacity: 0.95;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.output-display {
+    background: var(--background-color);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: #374151;
+}
+
+.output-display .time {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.back-button {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.back-button a {
+    color: #6b7280;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.back-button a:hover {
+    color: var(--primary-color);
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: none;
+}
+
+.copy-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease;
+    margin-left: 0.5rem;
+}
+
+.copy-btn:hover {
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.timezone-search {
+    position: relative;
+}
+
+.timezone-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.timezone-option {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.timezone-option:hover {
+    background: rgba(99, 102, 241, 0.1);
+}

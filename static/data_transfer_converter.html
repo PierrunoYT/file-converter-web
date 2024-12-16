@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Transfer Rate Converter - All-In-One Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Data Transfer Rate Converter</h1>
+            <a href="/" class="back-button">Back to Home</a>
+        </header>
+
+        <div class="converter-container">
+            <div class="converter-inputs">
+                <input type="number" id="data-transfer-value" placeholder="Enter value">
+                <select id="data-transfer-from">
+                    <option value="bps">bps</option>
+                    <option value="kbps">Kbps</option>
+                    <option value="mbps">Mbps</option>
+                    <option value="gbps">Gbps</option>
+                    <option value="B/s">B/s</option>
+                    <option value="KB/s">KB/s</option>
+                    <option value="MB/s">MB/s</option>
+                    <option value="GB/s">GB/s</option>
+                </select>
+                <span>to</span>
+                <select id="data-transfer-to">
+                    <option value="bps">bps</option>
+                    <option value="kbps">Kbps</option>
+                    <option value="mbps">Mbps</option>
+                    <option value="gbps">Gbps</option>
+                    <option value="B/s">B/s</option>
+                    <option value="KB/s">KB/s</option>
+                    <option value="MB/s">MB/s</option>
+                    <option value="GB/s">GB/s</option>
+                </select>
+            </div>
+            <button onclick="convertDataTransfer()">Convert</button>
+            <div id="data-transfer-result" class="result"></div>
+        </div>
+    </div>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

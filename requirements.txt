@@ -1,0 +1,17 @@
+Flask
+Pillow
+flask-cors
+pillow-heif
+pillow-avif-plugin
+pydub
+moviepy
+flask-limiter>=3.5.0
+redis>=4.0.0
+python-docx
+PyPDF2
+odfpy
+markdown
+docx2pdf
+pytz>=2023.3
+requests>=2.31.0
+redis>=4.0.0

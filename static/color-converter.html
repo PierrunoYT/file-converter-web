@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Code Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/color-converter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-palette"></i> Color Code Converter</h1>
+            <p>Convert between different color formats (HEX, RGB, HSL, CMYK)</p>
+        </header>
+
+        <div class="converter-section">
+            <div class="form-group">
+                <label for="colorInput">Color Value:</label>
+                <input type="text" id="colorInput" class="form-control" placeholder="Enter color value (e.g., #FF0000 or rgb(255,0,0))">
+            </div>
+
+            <div class="form-group">
+                <label for="fromFormat">From Format:</label>
+                <select id="fromFormat" class="form-control">
+                    <option value="hex">HEX (#RRGGBB)</option>
+                    <option value="rgb">RGB (rgb(r,g,b))</option>
+                    <option value="hsl">HSL (hsl(h,s%,l%))</option>
+                    <option value="cmyk">CMYK (cmyk(c%,m%,y%,k%))</option>
+                </select>
+            </div>
+
+            <div class="color-preview" id="colorPreview"></div>
+
+            <button class="convert-btn" id="convertBtn">
+                <i class="fas fa-sync-alt"></i> Convert Color
+            </button>
+
+            <div class="error-message" id="errorMessage"></div>
+
+            <div class="result-section">
+                <div class="result-item">
+                    <span>HEX:</span>
+                    <div>
+                        <span id="hexResult">-</span>
+                        <button class="copy-btn" data-format="hex">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <span>RGB:</span>
+                    <div>
+                        <span id="rgbResult">-</span>
+                        <button class="copy-btn" data-format="rgb">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <span>HSL:</span>
+                    <div>
+                        <span id="hslResult">-</span>
+                        <button class="copy-btn" data-format="hsl">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <span>CMYK:</span>
+                    <div>
+                        <span id="cmykResult">-</span>
+                        <button class="copy-btn" data-format="cmyk">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="/" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+
+    <script src="/static/js/color-converter.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angle Converter - All-In-One Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/angle-converter.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📐 Angle Converter</h1>
+        <p class="subtitle">Convert between different angle units</p>
+        
+        <div class="converter-container">
+            <div class="input-group">
+                <label>Value</label>
+                <input type="number" id="fromValue" placeholder="Enter value">
+            </div>
+
+            <div class="input-group">
+                <label>From</label>
+                <select id="fromUnit">
+                    <option value="degrees">Degrees (°)</option>
+                    <option value="radians">Radians (rad)</option>
+                    <option value="gradians">Gradians (grad)</option>
+                    <option value="turns">Turns</option>
+                    <option value="minutes">Arc Minutes (')</option>
+                    <option value="seconds">Arc Seconds (")</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>To</label>
+                <select id="toUnit">
+                    <option value="radians">Radians (rad)</option>
+                    <option value="degrees">Degrees (°)</option>
+                    <option value="gradians">Gradians (grad)</option>
+                    <option value="turns">Turns</option>
+                    <option value="minutes">Arc Minutes (')</option>
+                    <option value="seconds">Arc Seconds (")</option>
+                </select>
+            </div>
+
+            <button id="convertBtn" class="convert-btn">
+                <span>⇌</span> Convert
+            </button>
+
+            <div class="result-section">
+                <h2>Result</h2>
+                <div class="result-value" id="toValue"></div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Common Angle Conversions</h2>
+            <ul>
+                <li>1 turn = 360 degrees</li>
+                <li>1 radian ≈ 57.2958 degrees</li>
+                <li>1 degree = 60 arc minutes</li>
+                <li>1 arc minute = 60 arc seconds</li>
+                <li>1 gradian = 0.9 degrees</li>
+            </ul>
+        </div>
+        <a href="/" class="back-link">← Back to Home</a>
+    </div>
+    <script src="/static/js/angle-converter.js"></script>
+</body>
+</html>

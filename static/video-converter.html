@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Format Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/video-converter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-video"></i> Video Format Converter</h1>
+            <p>Convert your videos between different formats</p>
+        </header>
+
+        <div class="converter-section">
+            <div class="upload-container">
+                <div class="upload-area" id="dropZone">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag &amp; Drop your video file here</p>
+                    <p>or</p>
+                    <input type="file" id="fileInput" accept=".mp4,.mov,.mkv,.avi" hidden>
+                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                        Choose File
+                    </button>
+                    <p class="file-info">Supported formats: MP4, MOV, MKV, AVI</p>
+                </div>
+            </div>
+
+            <div class="conversion-options">
+                <div class="format-selection">
+                    <label for="targetFormat">Convert to:</label>
+                    <select id="targetFormat">
+                        <option value="mp4">MP4</option>
+                        <option value="mov">MOV</option>
+                        <option value="mkv">MKV</option>
+                        <option value="avi">AVI</option>
+                    </select>
+                </div>
+
+                <div class="quality-options" style="margin-bottom: 2rem;">
+                    <label for="quality">Quality:</label>
+                    <select id="quality">
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+
+                <button class="convert-btn" id="convertBtn" disabled>
+                    <i class="fas fa-cog"></i> Convert Video
+                </button>
+            </div>
+
+            <div class="progress-container" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+                <p class="progress-text">0%</p>
+            </div>
+
+            <div class="result-container" style="display: none;">
+                <h3>Converted Video</h3>
+                <div class="download-section">
+                    <button class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="back-button">
+            <a href="/" class="btn">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/video-converter.js"></script>
+</body>
+</html>
